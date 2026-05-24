@@ -319,7 +319,7 @@
       font-weight: 600;
     }
 
-    /* Animations */
+
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(30px) scale(0.96); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -364,6 +364,52 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--neon);
+    }
+
+    /* WORTH IT popup */
+    .worth-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,10,13,0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .worth-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .worth-box {
+      text-align: center;
+      transform: scale(0.88);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .worth-overlay.show .worth-box {
+      transform: scale(1);
+    }
+    .worth-text {
+      font-size: 52px;
+      font-weight: 300;
+      letter-spacing: -1px;
+      color: var(--text);
+      line-height: 1;
+    }
+    .worth-text span {
+      color: var(--neon);
+      font-weight: 600;
+    }
+    .worth-sub {
+      margin-top: 14px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
   </style>
 </head>
@@ -461,6 +507,26 @@
 
     update();
     setInterval(update, 1000);
+
+    // WORTH IT — fires on tab hide / minimize
+    const overlay = document.getElementById('worthOverlay');
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        overlay.classList.add('show');
+      } else {
+        overlay.classList.remove('show');
+      }
+    });
+    overlay.addEventListener('click', () => overlay.classList.remove('show'));
   </script>
+
+  <!-- WORTH IT overlay -->
+  <div class="worth-overlay" id="worthOverlay">
+    <div class="worth-box">
+      <div class="worth-text">WORTH <span>IT?</span></div>
+      <div class="worth-sub">tap anywhere to return</div>
+    </div>
+  </div>
+
 </body>
 </html>
